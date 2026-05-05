@@ -2,10 +2,6 @@ import adapter from '@sveltejs/adapter-netlify';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  compilerOptions: {
-    runes: ({ filename }) =>
-      !filename.split(/[/\\]/).includes('node_modules')
-  },
   kit: {
     adapter: adapter()
   }
