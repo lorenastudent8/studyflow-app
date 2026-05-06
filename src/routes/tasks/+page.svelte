@@ -33,7 +33,9 @@
       <div style="margin-top: 0.5rem;">
         <form method="POST" action="?/toggleDone" style="display: inline;">
           <input type="hidden" name="id" value={task.id} />
-          <button type="submit">
+         <button
+          type="submit"
+          class="btn {task.done ? 'secondary' : 'primary'}">
             {#if task.done}
               Als offen markieren
             {:else}
@@ -42,8 +44,8 @@
           </button>
         </form>
 
-        <a href={`/tasks/${task.id}/edit`} style="margin-left: 0.75rem;">
-          Bearbeiten
+        <a href={`/tasks/${task.id}/edit`} class="edit-btn">
+        Bearbeiten
         </a>
       </div>
     </li>
@@ -53,19 +55,49 @@
 <p><a href="/tasks/new">Neue Aufgabe erstellen</a></p>
 
 <style>
-  .task-list {
-    padding-left: 1.2rem;
-  }
+ .task-item {
+  background: white;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
 
-  .task-item {
-    margin-bottom: 1rem;
-  }
+.task-item:hover {
+  transform: translateY(-3px);
+}
 
-  .done {
-    color: green;
-  }
+.done {
+  opacity: 0.6;
+}
 
-  button {
-    margin-top: 0.25rem;
-  }
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.edit-btn {
+  margin-left: 0.7rem;
+  padding: 0.5rem 1rem;
+  background: #2196F3;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.edit-btn:hover {
+  background: #1976D2;
+}
 </style>

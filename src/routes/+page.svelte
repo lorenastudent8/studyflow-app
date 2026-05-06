@@ -1,23 +1,13 @@
-<script>
-</script>
-
 <h1>📚 StudyFlow</h1>
-
-<p>Organisiere deine Lernaufgaben effizient und bleib fokussiert.</p>
+<p class="subtitle">Organisiere deine Lernaufgaben effizient</p>
 
 <div class="buttons">
-  <a href="/tasks">➡️ Zu meinen Aufgaben</a>
-  <a href="/tasks/new">➕ Neue Aufgabe</a>
+  <a href="/tasks" class="btn primary">Zu Aufgaben</a>
+  <a href="/tasks/new" class="btn secondary">Neue Aufgabe</a>
 </div>
 
 <style>
-  h1 {
-    font-size: 3rem;
-    text-align: center;
-    margin-top: 2rem;
-  }
-
-  p {
+  .subtitle {
     text-align: center;
     margin-bottom: 2rem;
   }
@@ -28,15 +18,25 @@
     gap: 1rem;
   }
 
-  a {
-    padding: 0.7rem 1.2rem;
-    background: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
+  .btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: 0.2s;
   }
 
-  a:hover {
-    background: #45a049;
+  .primary {
+    background: #4CAF50;
+    color: white;
+  }
+
+  .secondary {
+    background: #2196F3;
+    color: white;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
   }
 </style>
