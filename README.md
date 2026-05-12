@@ -28,7 +28,8 @@ Kurz beschreiben, welches Problem adressiert wird und welches Ergebnis angestreb
 - Übersicht über Aufgaben schaffen  
 - Fokus beim Lernen unterstützen  
 - Aufgaben einfach erstellen und verwalten können  
-- Fortschritt sichtbar machen   
+- Fortschritt sichtbar machen  
+- Motivation durch visuelles Feedback erhöhen 
 - **Primäre Zielgruppe:** Studierende, die ihre Lernaufgaben strukturieren und fokussierter arbeiten möchten
 - **Weitere Stakeholder [Optional]:** _[z. B. Verwaltung, Geschäftsleitung]_  
 
@@ -61,7 +62,13 @@ Studierende arbeiten oft unter Zeitdruck und benötigen einfache Tools ohne Komp
 
 ### 3.2 Sketch
 - **Variantenüberblick:** _[kurz]_
+Es wurden verschiedene Layouts für die Aufgabenübersicht entworfen, darunter eine einfache Liste und eine Kartenansicht.
 - **Skizzen:** _[Mehrere Varianten; Unterschiede kurz dokumentieren.]_
+Variante 1: Klassische Liste mit Text  
+Variante 2: Kartenbasierte Darstellung mit Buttons  
+Variante 3: Dashboard mit Statistik  
+
+Die Kartenansicht wurde gewählt, da sie übersichtlicher und moderner wirkt.
 
 ### 3.3 Decide
 - **Gewählte Variante & Begründung:** _[Entscheidkriterien nennen]_  
@@ -76,24 +83,61 @@ User öffnet Aufgabenübersicht → erstellt Aufgabe → sieht Aufgabe → marki
 Beschreibt die Gestaltung und Interaktion.
 > **Hinweis:** Hier wird der **Prototyp** beschrieben, nicht das **Mockup**.
 - **Informationsarchitektur:** _[z. B. Seiten/Navigation: Konzept, nicht die technische Umsetzung]_
+- Startseite (Dashboard)  
+- Aufgabenübersicht (/tasks)  
+- Neue Aufgabe erstellen (/tasks/new)  
+- Aufgabe bearbeiten (/tasks/[id]/edit) 
+
 - **User Interface Design:** _[wichtige Screens: Screenshots mit kurzen Erläuterungen]_  
+Die Anwendung verwendet ein klares, minimalistisches Design mit Karten (Cards), Buttons und einer Navigationsleiste.
+
 - **Designentscheidungen:** _[zentrale Entscheidungen und Begründungen]_
+- Fokus auf Einfachheit  
+- Klare Call-to-Action Buttons  
+- Verwendung von Farben für Statusanzeigen 
 
 #### 3.4.2. Umsetzung (Technik)
 Fasst die technische Realisierung zusammen.
 - **Technologie-Stack:** _[SvelteKit, Bibliotheken falls genutzt]_
+- SvelteKit  
+- MongoDB Atlas  
+- Netlify  
+
 - **Tooling:** _[IDE/Erweiterungen, lokale/Cloud-Tools; den Einsatz von KI beschreiben Sie im Kapitel **KI-Deklaration**]_  
+- Visual Studio Code  
+- Git & GitHub
+
 - **Struktur & Komponenten:** _[Seiten, Routen, State/Stores, wichtige Komponenten]_
+- Seiten: +page.svelte, /tasks, /tasks/new, /tasks/[id]/edit  
+- Komponenten: TaskCard.svelte 
+
 - **Daten & Schnittstellen:** _[Wie werden Daten gespeichert, verwaltet, abgerufen?]_
+Aufgaben werden in MongoDB gespeichert und über Server-Routes geladen und bearbeitet.
+
 - **Deployment:** _[URL]_  
+https://studyflow-app-pt.netlify.app/
+
 - **Besondere Entscheidungen:** _[z. B. Trade-offs, Vereinfachungen]_  
+- Verwendung von Komponenten zur Wiederverwendbarkeit  
+- Fokus auf einfache und verständliche Architektur 
 
 ### 3.5 Validate
 - **URL der getesteten Version** (separat deployt)
 - **Ziele der Prüfung:** _[welche Fragen sollen beantwortet werden?]_  
+- Ist der Workflow verständlich?  
+- Können Nutzer Aufgaben problemlos erstellen und bearbeiten?  
+
 - **Vorgehen:** _[moderiert/unmoderiert; remote/on-site]_  
+Moderierter Test mit 2 Testpersonen vor Ort  
+
 - **Stichprobe:** _[Mit wem wurde getestet? Profil; Anzahl]_  
+2 Studierende 
+
 - **Aufgaben/Szenarien:** _[Ausformulierte Testaufgaben]_  
+- Neue Aufgabe erstellen  
+- Aufgabe als erledigt markieren  
+- Aufgabe bearbeiten 
+
 - **Kennzahlen & Beobachtungen:** _[z. B. Erfolgsquote, Zeitbedarf, qualitative Findings]_  
 - **Zusammenfassung der Resultate:** _[Wichtigste Erkenntnisse; 2-4 Sätze]_  
 - **Abgeleitete Verbesserungen:** _[Anforderungen, die als nächstes umgesetzt werden sollten, priorisiert, kurz begründet; falls Verbesserungen im Prototyp konkret umgesetzt wurden: In Kap. 4 dokumentieren]_  
@@ -130,8 +174,16 @@ Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im 
 
 ### 6.1 KI-Tools
 - **Eingesetzte Tools**: _[z. B. Copilot, ChatGPT, Claude, lokale Modelle; Version/Variante wenn bekannt]_
+- ChatGPT wurde zur Unterstützung verwendet  
+
 - **Zweck & Umfang**: _[wie, wofür und in welchem Ausmass wurde KI eingesetzt (z. B. Textentwürfe, Codevorschläge, Tests, Refactoring); welche Teile stammen (ganz/teilweise) aus KI-Unterstützung?]_
+- Hilfe bei Code  
+- Debugging  
+- Struktur 
+
 - **Eigene Leistung (Abgrenzung):** _[was ist eigenständig erarbeitet/überarbeitet worden?]_
+- Anpassung und Verständnis des Codes  
+- eigenständige Umsetzung 
 
 ### 6.2 Prompt-Vorgehen
 _[Überlegungen zu Prompt-Vorgehen, Qualität und Urheberrecht/Quellen. Wie wurde beim Prompting vorgegangen? Zu beschreiben ist die grundlegende Vorgehensweise. Einzelne, konkrete Prompts sollten höchstens als Beispiele aufgeführt werden. ]_
