@@ -1,103 +1,108 @@
-<script lang="ts">
-  import TaskCard from '$lib/components/TaskCard.svelte';
-  let { data }: { data: any } = $props();
+<script>
+  export let data;
 </script>
 
-<h1>Aufgaben</h1>
+<div class="container py-5">
 
-<!-- Filter -->
-<p>
-  <a href="/tasks" style="font-weight: {data.filter ? 'normal' : 'bold'}">Alle</a> |
-  <a href="/tasks?filter=open" style="font-weight: {data.filter === 'open' ? 'bold' : 'normal'}">Offen</a> |
-  <a href="/tasks?filter=done" style="font-weight: {data.filter === 'done' ? 'bold' : 'normal'}">Erledigt</a>
-</p>
+  <!-- TITLE -->
+  <h1 class="text-center mb-4 fw-bold">📋 Aufgaben</h1>
 
-<!-- Fortschritt -->
-<p>
-  {data.doneCount} von {data.total} Aufgaben erledigt
-  ({Math.round((data.doneCount / data.total) * 100) || 0}%)
-</p>
+  <!-- FILTER -->
+  <div class="d-flex justify-content-center gap-2 mb-4">
 
-<!-- Erfolgsmeldung -->
-{#if data.success}
-  <p style="color: green;">{data.success}</p>
-{/if}
+    <a href="/tasks"
+      class="filter-btn { !data.filter ? 'active' : '' }">
+      Alle
+    </a>
 
-<p>Hier siehst du deine offenen Lernaufgaben.</p>
+    <a href="/tasks?filter=open"
+      class="filter-btn { data.filter === 'open' ? 'active-open' : '' }">
+      Offen
+    </a>
 
-<ul class="task-list">
-  {#each data.tasks as task}
-    <li class:done={task.done} class="task-item">
-      <TaskCard {task} />
+    <a href="/tasks?filter=done"
+      class="filter-btn { data.filter === 'done' ? 'active-done' : '' }">
+      Erledigt
+    </a>
+</div>
 
-      <div style="margin-top: 0.5rem;">
-        <form method="POST" action="?/toggleDone" style="display: inline;">
-          <input type="hidden" name="id" value={task.id} />
-         <button
-          type="submit"
-          class="btn {task.done ? 'secondary' : 'primary'}">
-            {#if task.done}
-              Als offen markieren
-            {:else}
-              Als erledigt markieren
-            {/if}
-          </button>
-        </form>
+  <!-- PROGRESS -->
+  <div class="text-center mb-5">
+    <p class="fw-semibold mb-2">
+      {data.doneCount} von {data.total} Aufgaben erledigt
+      ({Math.round((data.doneCount / data.total) * 100) || 0}%)
+    </p>
 
-        <a href={`/tasks/${task.id}/edit`} class="edit-btn">
-        Bearbeiten
-        </a>
+    <div class="progress mx-auto" style="max-width: 500px; height: 12px;">
+      <div
+        class="progress-bar bg-success"
+        style="width: {(data.doneCount / data.total) * 100 || 0}%"
+      ></div>
+    </div>
+  </div>
+
+  <!-- TASK GRID -->
+  <div class="row g-4">
+
+  {#if data?.tasks}
+    {#each data.tasks as task}
+
+      <div class="col-lg-4 col-md-6">
+
+        <div class="task-card {task.done ? 'done' : ''}">
+
+          <h5>{task.title}</h5>
+
+          <p class="meta">
+            {task.course} • {task.minutes} Min
+          </p>
+
+<div class="actions">
+
+  <!-- DONE -->
+  <form method="POST" action="?/toggleDone">
+    <input type="hidden" name="id" value={task.id} />
+    <button class="btn-status {task.done ? 'open' : 'done'}">
+      {task.done ? 'Offen' : 'Erledigt'}
+    </button>
+  </form>
+
+  <!-- EDIT -->
+  <a href={`/tasks/${task.id}/edit`} class="btn-edit">
+    Bearbeiten
+  </a>
+
+  <!-- DELETE -->
+  <form method="POST" action="?/deleteTask">
+    <input type="hidden" name="id" value={task.id} />
+    <button
+      class="btn-delete"
+      on:click={(e) => {
+        if (!confirm('Wirklich löschen?')) {
+          e.preventDefault();
+        }
+      }}
+    >
+      Löschen
+    </button>
+  </form>
+
+</div>
+
+        </div>
+
       </div>
-    </li>
-  {/each}
-</ul>
 
-<p><a href="/tasks/new">Neue Aufgabe erstellen</a></p>
+    {/each}
+  {/if}
 
-<style>
- .task-item {
-  background: white;
-  padding: 1.2rem;
-  margin-bottom: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-  transition: 0.2s;
-}
+</div>
 
-.task-item:hover {
-  transform: translateY(-3px);
-}
+  <!-- NEW BUTTON -->
+  <div class="text-center mt-5">
+    <a href="/tasks/new" class="btn-add">
+      ➕ Neue Aufgabe
+    </a>
+  </div>
 
-.done {
-  opacity: 0.6;
-}
-
-.btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #4CAF50, #45a049);
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn:hover {
-  transform: scale(1.05);
-}
-
-.edit-btn {
-  margin-left: 0.7rem;
-  padding: 0.5rem 1rem;
-  background: #2196F3;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.edit-btn:hover {
-  background: #1976D2;
-}
-</style>
+</div>

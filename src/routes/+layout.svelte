@@ -2,37 +2,27 @@
   import '$lib/app.css';
 </script>
 
-<nav class="navbar">
-  <h2>📚 StudyFlow</h2>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
 
-  <div class="links">
-    <a href="/">Home</a>
-    <a href="/tasks">Aufgaben</a>
-    <a href="/tasks/new">Neu</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success px-4">
+  <a class="navbar-brand fw-bold" href="/">📚 StudyFlow</a>
+
+  <form method="POST" action="/logout">
+  <button class="btn btn-sm btn-light">Logout</button>
+</form>
+
+  <div class="ms-auto d-flex gap-3">
+    <a class="nav-link text-white" href="/">Home</a>
+    <a class="nav-link text-white" href="/tasks">Aufgaben</a>
+    <a class="nav-link text-white" href="/tasks/new">Neu</a>
+    <a class="nav-link text-white" href="/timer">Timer</a>
+    <a class="nav-link text-white" href="/login">Login</a>
   </div>
 </nav>
 
 <main>
   <slot />
 </main>
-
-<style>
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    color: white;
-  }
-
-  .links a {
-    margin-left: 1rem;
-    color: white;
-    font-weight: bold;
-  }
-
-  main {
-    padding: 2rem;
-  }
-</style>
