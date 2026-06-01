@@ -1,19 +1,33 @@
-export const load = async () => {
-  const tasks = [
-    { done: true },
-    { done: false },
-    { done: true }
-  ];
+import { getDb } from '$lib/server/db';
+import type { PageServerLoad } from './$types';
 
-  const total = tasks.length;
-  const doneCount = tasks.filter(t => t.done).length;
+export const load: PageServerLoad = async ({ cookies }) => {
+  const db = await getDb();
 
- const open = total - doneCount;
+  const userCookie = cookies.get('user');
 
-return {
-  total,
-  done: doneCount,
-  doneCount,
-  open
-};
+  if (!userCookie) {
+    return {
+      totalTasks: 0,
+      doneTasks: 0,
+      openTasks: 0
+    };
+  }
+
+  const user = JSON.parse(userCookie);
+
+  const tasks = await db
+    .collection('tasks')
+    .find({ userId: user.id }) // 🔥 wichtig!
+    .toArray();
+
+  const totalTasks = tasks.length;
+  const doneTasks = tasks.filter((t) => t.done).length;
+  const openTasks = totalTasks - doneTasks;
+
+  return {
+    totalTasks,
+    doneTasks,
+    openTasks
+  };
 };

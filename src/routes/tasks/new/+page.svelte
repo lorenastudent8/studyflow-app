@@ -1,17 +1,46 @@
-<script lang="ts">
-import TaskForm from '$lib/components/TaskForm.svelte';
-  let { form }: { form?: { error?: string } } = $props();
-</script>
+<div class="container mt-5">
 
-<h1>Neue Aufgabe</h1>
-<p>Hier erfassen Nutzer:innen eine neue Lernaufgabe.</p>
+  <div class="card p-4 shadow-sm mx-auto" style="max-width: 500px;">
+    
+    <h2 class="text-center mb-4">➕ Neue Aufgabe</h2>
 
-<form method="POST">
-  <TaskForm submitLabel="Speichern" />
-</form>
+    <form method="POST">
 
-{#if form?.error}
-  <p style="color: red;">{form.error}</p>
-{/if}
+      <div class="mb-3">
+        <label for="title" class="form-label">Titel</label>
+        <input id="title" name="title" class="form-control" />
+      </div>
 
-<p><a href="/tasks">Zurück zur Aufgabenübersicht</a></p>
+      <div class="mb-3">
+  <label for="course" class="form-label">Fach / Kategorie</label>
+  <input id="course" name="course" class="form-control" required />
+</div>
+
+<div class="mb-3">
+  <label for="minutes" class="form-label">Dauer (Minuten)</label>
+  <input id="minutes" name="minutes" type="number" class="form-control" />
+</div>
+
+<div class="mb-3">
+  <label for="dueDate" class="form-label">Fällig bis</label>
+  <input
+    id="dueDate"
+    name="dueDate"
+    type="date"
+    class="form-control"
+  />
+</div>
+
+      <button class="btn btn-success w-100 mb-2">
+        Speichern
+      </button>
+
+      <a href="/tasks" class="btn btn-outline-secondary w-100">
+        Zurück
+      </a>
+
+    </form>
+
+  </div>
+
+</div>

@@ -308,3 +308,121 @@ input.form-control {
   color: white;
   transform: scale(1.05);
 }
+.due-date {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.overdue {
+  color: #e53935;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.overdue {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.task-card.overdue {
+  border: 2px solid #ef5350;
+}
+/* STATUS FARBEN */
+
+.task-card.overdue {
+  border: 2px solid #e53935;
+  background: #ffebee;
+}
+
+.task-card.today {
+  border: 2px solid #fbc02d;
+  background: #fffde7;
+}
+
+.task-card.done {
+  background: #e8f5e9;
+  border: 2px solid #43a047;
+}
+
+/* kleine Labels */
+.status-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.status-overdue {
+  color: #d32f2f;
+}
+
+.status-today {
+  color: #f9a825;
+}
+
+.status-done {
+  color: #2e7d32;
+}
+.btn-timer {
+  background: #1976d2;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: 0.2s;
+  min-width: 95px;
+  text-align: center;
+}
+
+.btn-timer:hover {
+  background: #0d47a1;
+  transform: scale(1.05);
+}
+.logo {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* ACTIVE LINK */
+.links a.active {
+  border-bottom: 2px solid white;
+  padding-bottom: 2px;
+}
+
+/* LOGIN BUTTON */
+.btn-login {
+  background: white;
+  color: #2e7d32;
+  padding: 6px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.btn-login:hover {
+  background: #f1f1f1;
+}
+
+/* RECHTS */
+.auth {
+  display: flex;
+  align-items: center;
+}
+.links a {
+  position: relative;
+}
+
+.links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: 0.2s;
+}
+
+.links a:hover::after {
+  width: 100%;
+}

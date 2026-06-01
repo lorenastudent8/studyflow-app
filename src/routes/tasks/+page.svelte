@@ -1,5 +1,17 @@
-<script>
-  export let data;
+<script lang="ts">
+  export let data: {
+    tasks: {
+      id: string;
+      title: string;
+      course: string;
+      minutes: number;
+      done: boolean;
+      dueDate: string | null;
+    }[];
+    total: number;
+    doneCount: number;
+    filter?: string;
+  };
 </script>
 
 <div class="container py-5">
@@ -49,13 +61,39 @@
 
       <div class="col-lg-4 col-md-6">
 
-        <div class="task-card {task.done ? 'done' : ''}">
+        <div class="task-card 
+  {task.done ? 'done' : ''}
+  {task.dueDate && new Date(task.dueDate).setHours(0,0,0,0) === new Date().setHours(0,0,0,0) ? 'today' : ''}
+  {task.dueDate && new Date(task.dueDate) < new Date() && !task.done ? 'overdue' : ''}
+">
 
           <h5>{task.title}</h5>
 
           <p class="meta">
             {task.course} • {task.minutes} Min
           </p>
+
+        {#if task.dueDate}
+  <p class="due-date">
+    📅 {new Date(task.dueDate).toLocaleDateString()}
+  </p>
+{/if}
+
+{#if task.dueDate && new Date(task.dueDate) < new Date() && !task.done}
+  <p class="overdue">
+    ⚠️ Überfällig
+  </p>
+{/if}
+
+{#if task.done}
+  <p class="status-label status-done">✅ Erledigt</p>
+
+{:else if task.dueDate && new Date(task.dueDate).setHours(0,0,0,0) === new Date().setHours(0,0,0,0)}
+  <p class="status-label status-today">🟡 Heute fällig</p>
+
+{:else if task.dueDate && new Date(task.dueDate) < new Date()}
+  <p class="status-label status-overdue">🔴 Überfällig</p>
+{/if}
 
 <div class="actions">
 
@@ -70,6 +108,14 @@
   <!-- EDIT -->
   <a href={`/tasks/${task.id}/edit`} class="btn-edit">
     Bearbeiten
+  </a>
+
+   <!-- 🆕 TIMER BUTTON HIER -->
+  <a
+    href={`/timer?id=${task.id}&title=${task.title}&minutes=${task.minutes}`}
+    class="btn-timer"
+  >
+    ⏱️ Start
   </a>
 
   <!-- DELETE -->
@@ -88,15 +134,14 @@
   </form>
 
 </div>
+ </div> <!-- task-card -->
 
-        </div>
+        </div> <!-- col -->
 
-      </div>
+      {/each}
+    {/if}
 
-    {/each}
-  {/if}
-
-</div>
+  </div> <!-- row -->
 
   <!-- NEW BUTTON -->
   <div class="text-center mt-5">

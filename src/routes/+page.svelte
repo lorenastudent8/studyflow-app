@@ -10,21 +10,21 @@
   <a href="/tasks" class="dashboard-card">
     <div class="card text-center clickable">
       <div>📚 Aufgaben gesamt</div>
-      <h3>{data.total}</h3>
+      <h3>{data.totalTasks}</h3>
     </div>
   </a>
 
   <a href="/tasks?filter=done" class="dashboard-card">
     <div class="card text-center clickable">
       <div>✅ Erledigt</div>
-      <h3>{data.done}</h3>
+      <h3>{data.doneTasks}</h3>
     </div>
   </a>
 
   <a href="/tasks?filter=open" class="dashboard-card">
     <div class="card text-center clickable">
       <div>⏳ Offen</div>
-      <h3>{data.open}</h3>
+      <h3>{data.totalTasks - data.doneTasks}</h3>
     </div>
   </a>
 
@@ -37,12 +37,12 @@
   <div class="progress-bar">
     <div
       class="progress-fill"
-      style="width: {(data.doneCount / data.total) * 100 || 0}%">
+      style="width: {(data.doneTasks / data.totalTasks) * 100 || 0}%">
     </div>
   </div>
 
   <p>
-    {Math.round((data.doneCount / data.total) * 100) || 0}% erledigt
+    {Math.round((data.doneTasks / data.totalTasks) * 100) || 0}% erledigt
   </p>
 </div>
 
