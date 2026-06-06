@@ -1,32 +1,30 @@
 import { getDb } from '$lib/server/db';
 import { ObjectId } from 'mongodb';
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
+
+const ADMIN_ID = "6a1c8eecd439b1e776440b2e";
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
   const success = url.searchParams.get('success');
   const filter = url.searchParams.get('filter');
 
   const db = await getDb();
-
   const userCookie = cookies.get('user');
 
-  // ❌ nicht eingeloggt
-  if (!userCookie) {
-    return {
-      tasks: [],
-      total: 0,
-      doneCount: 0,
-      filter,
-      success: null
-    };
-  }
+  let query: any = {};
 
-  const user = JSON.parse(userCookie);
+  if (userCookie) {
+    const user = JSON.parse(userCookie);
+    query.userId = user.id;
+  } else {
+    query.userId = ADMIN_ID;
+  }
 
   const tasks = await db
     .collection('tasks')
     .find({
-      userId: user.id,
+      ...query,
       ...(filter === 'done'
         ? { done: true }
         : filter === 'open'
@@ -39,24 +37,24 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
   const total = tasks.length;
   const doneCount = tasks.filter((t) => t.done).length;
 
-  type Task = {
-    id: string;
-    title: string;
-    course: string;
-    minutes: number;
-    done: boolean;
-    dueDate: string | null;
-  };
-
   return {
-    tasks: tasks.map((task): Task => ({
-      id: String(task._id),
-      title: task.title,
-      course: task.course,
-      minutes: task.minutes,
-      done: task.done,
-      dueDate: task.dueDate ?? null
-    })),
+ tasks: tasks.map((task) => {
+  return {
+    id: String(task._id),
+    title: task.title,
+    course: task.course,
+    minutes: task.minutes,
+    done: task.done,
+
+    dueDate: task.dueDate ?? null,
+    priority: task.priority ?? 'low',
+
+    description:
+      typeof task.description === 'string'
+        ? task.description
+        : ''
+  };
+}),
     success:
       success === 'deleted'
         ? 'Aufgabe gelöscht!'
@@ -69,11 +67,8 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
   };
 };
 
-import { redirect } from '@sveltejs/kit';
-
 export const actions: Actions = {
 
-  // ✅ DONE TOGGLE
   toggleDone: async ({ request }) => {
     const formData = await request.formData();
     const id = String(formData.get('id') ?? '');
@@ -88,7 +83,7 @@ export const actions: Actions = {
     const task = await db.collection('tasks').findOne({ _id: objectId });
 
     if (!task) {
-      return { error: 'Aufgabe nicht gefunden' };
+      return { error: 'Nicht gefunden' };
     }
 
     await db.collection('tasks').updateOne(
@@ -99,34 +94,6 @@ export const actions: Actions = {
     throw redirect(303, '/tasks');
   },
 
-  completeFromTimer: async ({ request }) => {
-
-  const formData = await request.formData();
-  
-  const id = String(formData.get('id') ?? '');
-
-  if (!ObjectId.isValid(id)) {
-    return { error: 'Ungültige ID' };
-  }
-
-  const db = await getDb();
-
-  await db.collection('tasks').updateOne(
-    { _id: new ObjectId(id) },
-    { $set: { done: true } }
-  );
-
-  const duration = Number(formData.get('duration') ?? 25);
-
-  await db.collection('sessions').insertOne({
-  taskId: new ObjectId(id),
-  duration,
-  createdAt: new Date()
-});
-
-  return { success: true };
-},
-  // 🗑️ DELETE (FIXED)
   deleteTask: async ({ request }) => {
     const formData = await request.formData();
     const id = String(formData.get('id') ?? '');
@@ -136,13 +103,9 @@ export const actions: Actions = {
     }
 
     const db = await getDb();
-    const objectId = new ObjectId(id);
+    await db.collection('tasks').deleteOne({ _id: new ObjectId(id) });
 
-    await db.collection('tasks').deleteOne({ _id: objectId });
-
-    // ✅ WICHTIG → redirect statt return
     throw redirect(303, '/tasks?success=deleted');
   }
-
 };
     

@@ -1,42 +1,102 @@
-<div class="container mt-5">
+<script>
+</script>
 
-  <div class="card p-4 shadow-sm mx-auto" style="max-width: 500px;">
-    
-    <h2 class="text-center mb-4">➕ Neue Aufgabe</h2>
+<div class="new-task-page">
 
-    <form method="POST">
+  <div class="icon">+</div>
 
-      <div class="mb-3">
-        <label for="title" class="form-label">Titel</label>
-        <input id="title" name="title" class="form-control" />
+  <h1>Neue Aufgabe</h1>
+  <p class="subtitle">
+    Erstelle eine neue Aufgabe und bleibe organisiert
+  </p>
+
+  <div class="form-card">
+
+  <form method="POST" action="?/createTask">
+
+      <!-- TITLE -->
+      <div class="form-group">
+        <label for="title">📘 Titel der Aufgabe</label>
+        <input
+          id="title"
+          name="title"
+          placeholder="z.B. Mathe Übungsaufgaben lösen..."
+          required
+        />
       </div>
 
-      <div class="mb-3">
-  <label for="course" class="form-label">Fach / Kategorie</label>
-  <input id="course" name="course" class="form-control" required />
-</div>
+      <!-- COURSE -->
+      <div class="form-group">
+        <label for="course">📗 Kurs / Fach</label>
+        <input
+          id="course"
+          name="course"
+          placeholder="z.B. Mathematik, UX Design..."
+        />
+      </div>
 
-<div class="mb-3">
-  <label for="minutes" class="form-label">Dauer (Minuten)</label>
-  <input id="minutes" name="minutes" type="number" class="form-control" />
-</div>
+      <!-- DESCRIPTION -->
+      <div class="form-group">
+        <label for="description">📝 Beschreibung (optional)</label>
+        <textarea
+          id="description"
+          name="description"
+          placeholder="Füge eine Beschreibung hinzu..."
+        ></textarea>
+      </div>
 
-<div class="mb-3">
-  <label for="dueDate" class="form-label">Fällig bis</label>
-  <input
-    id="dueDate"
-    name="dueDate"
-    type="date"
-    class="form-control"
-  />
-</div>
+      <!-- ROW -->
+      <div class="row">
 
-      <button class="btn btn-success w-100 mb-2">
-        Speichern
+        <div class="form-group">
+          <label for="dueDate">📅 Fälligkeitsdatum</label>
+          <input id="dueDate" type="date" name="dueDate" />
+        </div>
+
+        <div class="form-group">
+          <label for="minutes">⏱️ Dauer (Minuten)</label>
+         <input 
+  id="minutes"
+  type="number"
+  name="minutes"
+  placeholder="z.B. 30"
+  min="1"
+  step="1"
+  required
+/>
+        </div>
+
+      </div>
+
+      <!-- PRIORITY -->
+      <fieldset class="form-group">
+  <legend>🚩 Priorität</legend>
+
+  <div class="priority">
+    <label class="prio low">
+      <input type="radio" name="priority" value="low" checked />
+      Niedrig
+    </label>
+
+    <label class="prio mid">
+      <input type="radio" name="priority" value="medium" />
+      Mittel
+    </label>
+
+    <label class="prio high">
+      <input type="radio" name="priority" value="high" />
+      Hoch
+    </label>
+  </div>
+</fieldset>
+
+      <!-- BUTTON -->
+      <button class="btn-save">
+        ➕ Aufgabe erstellen
       </button>
 
-      <a href="/tasks" class="btn btn-outline-secondary w-100">
-        Zurück
+      <a href="/tasks" class="btn-back">
+        ← Zurück
       </a>
 
     </form>

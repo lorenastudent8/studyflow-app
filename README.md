@@ -294,7 +294,11 @@ https://studyflow-app-pt.netlify.app/
 
 - Verwendung von serverseitigen Actions statt komplexer API-Strukturen → einfachere Architektur  
 - Speicherung von User-Daten über Cookies → einfache Authentifizierung  
-- Fokus auf Minimalismus statt Feature-Overload → bessere Usability   
+- Fokus auf Minimalismus statt Feature-Overload → bessere Usability
+- Zur Verbesserung der Benutzerfreundlichkeit wurde ein Demo-Modus integriert. 
+  Nicht eingeloggte Nutzer sehen automatisch Beispielaufgaben eines Test-Users. 
+  Dies ermöglicht es insbesondere Testpersonen, die Anwendung sofort zu verstehen und auszuprobieren, 
+  ohne einen Account erstellen zu müssen. 
 
 ### 3.5 Validate
 - **URL der getesteten Version** (separat deployt)

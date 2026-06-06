@@ -1,10 +1,5 @@
 <script lang="ts">
   import '$lib/app.css';
-  export let data: {
-  user: {
-    email: string;
-  } | null;
-};
 </script>
 
 <link
@@ -12,34 +7,33 @@
   rel="stylesheet"
 />
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-success px-4">
-  <a class="navbar-brand fw-bold" href="/">📚 StudyFlow</a>
+<nav class="navbar">
 
-<div class="ms-auto d-flex gap-4 align-items-center">
-
-  <a class="nav-link text-white" href="/">Dashboard</a>
-  <a class="nav-link text-white" href="/timer">⏱ Timer</a>
-  <a class="nav-link text-white" href="/tasks">📋 Aufgaben</a>
-  <a class="nav-link text-white" href="/stats">📊 Aktivitäten</a>
-  <a class="nav-link text-white" href="/methods">🧠 Methoden</a>
-  <a class="nav-link text-white" href="/journal">📖 Tagebuch</a>
-
-  {#if data.user}
-    <span class="text-white me-2">
-      👋 {data.user.email}
-    </span>
-
-    <form method="POST" action="/logout">
-      <button class="btn btn-sm btn-light">Logout</button>
-    </form>
-  {:else}
-    <a class="nav-link text-white" href="/login">Login</a>
-    <a class="btn btn-light btn-sm" href="/register">
-      Registrieren
-    </a>
-  {/if}
-
+  <!-- LEFT -->
+  <div class="nav-left">
+    <div class="logo">
+  📊 <span>StudyFlow</span>
 </div>
+
+    <div class="nav-links">
+  <a href="/">📊 Dashboard</a>
+  <a href="/timer">⏱ Timer</a>
+  <a href="/tasks">📋 Aufgaben</a>
+  <a href="/stats">📈 Aktivitäten</a>
+</div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="nav-right">
+  <a href="/login" class="btn-login-outline">
+    👤 Login
+  </a>
+
+  <a href="/register" class="btn-login">
+    ➕ Registrieren
+  </a>
+</div>
+
 </nav>
 
 <main>

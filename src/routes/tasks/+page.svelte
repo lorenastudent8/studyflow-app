@@ -1,153 +1,169 @@
 <script lang="ts">
   export let data: {
-    tasks: {
-      id: string;
-      title: string;
-      course: string;
-      minutes: number;
-      done: boolean;
-      dueDate: string | null;
-    }[];
-    total: number;
-    doneCount: number;
-    filter?: string;
-  };
+  tasks: Task[];
+  total: number;
+  doneCount: number;
+  filter?: string;
+};
+
+  type Task = {
+  id: string;
+  title: string;
+  course: string;
+  minutes: number;
+  done: boolean;
+  dueDate?: string | null;
+  priority?: string;
+  description?: string; 
+};
+
+  function getDateStatus(date: string | null | undefined) {
+  if (!date) return null;
+
+  const today = new Date();
+  const due = new Date(date);
+
+  if (isNaN(due.getTime())) return null;
+
+  today.setHours(0,0,0,0);
+  due.setHours(0,0,0,0);
+
+  const diff = (due.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+
+  if (diff === 0) return 'today';
+  if (diff === 1) return 'tomorrow';
+  if (diff < 0) return 'overdue';
+
+  return 'future';
+}
 </script>
 
-<div class="container py-5">
+<div class="tasks-page">
 
-  <!-- TITLE -->
-  <h1 class="text-center mb-4 fw-bold">📋 Aufgaben</h1>
+  <h1>📋 Aufgaben</h1>
 
   <!-- FILTER -->
-  <div class="d-flex justify-content-center gap-2 mb-4">
-
-    <a href="/tasks"
-      class="filter-btn { !data.filter ? 'active' : '' }">
-      Alle
+  <div class="filters">
+    <a href="/tasks" class="filter all { !data.filter ? 'active' : '' }">
+      📋 Alle <span>{data.total}</span>
     </a>
 
-    <a href="/tasks?filter=open"
-      class="filter-btn { data.filter === 'open' ? 'active-open' : '' }">
-      Offen
+    <a href="/tasks?filter=open" class="filter open { data.filter === 'open' ? 'active' : '' }">
+      ⏰ Offen <span>{data.total - data.doneCount}</span>
     </a>
 
-    <a href="/tasks?filter=done"
-      class="filter-btn { data.filter === 'done' ? 'active-done' : '' }">
-      Erledigt
+    <a href="/tasks?filter=done" class="filter done { data.filter === 'done' ? 'active' : '' }">
+      ✅ Erledigt <span>{data.doneCount}</span>
     </a>
-</div>
+  </div>
 
   <!-- PROGRESS -->
-  <div class="text-center mb-5">
-    <p class="fw-semibold mb-2">
-      {data.doneCount} von {data.total} Aufgaben erledigt
-      ({Math.round((data.doneCount / data.total) * 100) || 0}%)
-    </p>
+  <p class="progress-text">
+    {data.doneCount} von {data.total} Aufgaben erledigt
+    ({Math.round((data.doneCount / data.total) * 100) || 0}%)
+  </p>
 
-    <div class="progress mx-auto" style="max-width: 500px; height: 12px;">
-      <div
-        class="progress-bar bg-success"
-        style="width: {(data.doneCount / data.total) * 100 || 0}%"
-      ></div>
-    </div>
+  <div class="progress-bar">
+    <div
+      class="progress-fill"
+      style="width: {(data.doneCount / data.total) * 100 || 0}%"
+    ></div>
   </div>
 
-  <!-- TASK GRID -->
-  <div class="row g-4">
+  <!-- TASK LIST -->
+  <div class="task-list">
 
-  {#if data?.tasks}
-    {#each data.tasks as task}
+  {#each data.tasks as task}
 
-      <div class="col-lg-4 col-md-6">
+    <div class="task-row {task.done ? 'done' : ''} {getDateStatus(task.dueDate) || ''}">
 
-        <div class="task-card 
-  {task.done ? 'done' : ''}
-  {task.dueDate && new Date(task.dueDate).setHours(0,0,0,0) === new Date().setHours(0,0,0,0) ? 'today' : ''}
-  {task.dueDate && new Date(task.dueDate) < new Date() && !task.done ? 'overdue' : ''}
-">
+      <!-- CHECK -->
+      <form method="POST" action="?/toggleDone">
+        <input type="hidden" name="id" value={task.id} />
+        <button class="check-btn">
+          {task.done ? "✔" : ""}
+        </button>
+      </form>
 
-          <h5>{task.title}</h5>
+      <!-- CONTENT -->
+      <div class="task-content">
+        <div class="title">{task.title}</div>
 
-          <p class="meta">
-            {task.course} • {task.minutes} Min
-          </p>
+        <div class="meta">
+  {task.course} • {task.minutes} Min
 
+  {#if task.description && task.description.trim() !== ''}
+  <div class="desc">
+    📝 {task.description.slice(0, 80)}
+  </div>
+{/if}
+</div>
+
+        <!-- PRIORITY -->
+        <div class="priority {task.priority || 'low'}">
+          {#if task.priority === 'low'}
+            🟢 Niedrig
+          {:else if task.priority === 'medium'}
+            🟡 Mittel
+          {:else if task.priority === 'high'}
+            🔴 Hoch
+          {:else}
+            🟢 Niedrig
+          {/if}
+        </div>
+      </div>
+
+      <!-- DATE -->
+      <div class="date">
         {#if task.dueDate}
-  <p class="due-date">
-    📅 {new Date(task.dueDate).toLocaleDateString()}
-  </p>
-{/if}
+          <div class="date-main">
+            📅 {new Date(task.dueDate).toLocaleDateString()}
+          </div>
 
-{#if task.dueDate && new Date(task.dueDate) < new Date() && !task.done}
-  <p class="overdue">
-    ⚠️ Überfällig
-  </p>
-{/if}
+          {#if getDateStatus(task.dueDate) === 'today'}
+            <div class="badge today">✔ Heute</div>
 
-{#if task.done}
-  <p class="status-label status-done">✅ Erledigt</p>
+          {:else if getDateStatus(task.dueDate) === 'tomorrow'}
+            <div class="badge tomorrow">● Morgen</div>
 
-{:else if task.dueDate && new Date(task.dueDate).setHours(0,0,0,0) === new Date().setHours(0,0,0,0)}
-  <p class="status-label status-today">🟡 Heute fällig</p>
+          {:else if getDateStatus(task.dueDate) === 'overdue'}
+            <div class="badge overdue">● Überfällig</div>
 
-{:else if task.dueDate && new Date(task.dueDate) < new Date()}
-  <p class="status-label status-overdue">🔴 Überfällig</p>
-{/if}
+          {:else if getDateStatus(task.dueDate) === 'future'}
+            <div class="badge future">
+              📅 In {Math.ceil((new Date(task.dueDate).getTime() - Date.now()) / (1000*60*60*24))} Tagen
+            </div>
+          {/if}
+        {/if}
+      </div>
 
-<div class="actions">
+      <!-- ACTIONS (JETZT RICHTIG IM LOOP) -->
+      <div class="actions">
 
-  <!-- DONE -->
-  <form method="POST" action="?/toggleDone">
-    <input type="hidden" name="id" value={task.id} />
-    <button class="btn-status {task.done ? 'open' : 'done'}">
-      {task.done ? 'Offen' : 'Erledigt'}
-    </button>
-  </form>
+        <a href={`/tasks/${task.id}/edit`} class="btn-icon edit">✏️</a>
 
-  <!-- EDIT -->
-  <a href={`/tasks/${task.id}/edit`} class="btn-edit">
-    Bearbeiten
-  </a>
+        <a
+          href={`/timer?id=${task.id}&title=${task.title}&minutes=${task.minutes}`}
+          class="btn-icon timer"
+        >
+          ⏱️
+        </a>
 
-   <!-- 🆕 TIMER BUTTON HIER -->
-  <a
-    href={`/timer?id=${task.id}&title=${task.title}&minutes=${task.minutes}`}
-    class="btn-timer"
-  >
-    ⏱️ Start
-  </a>
+        <form method="POST" action="?/deleteTask">
+          <input type="hidden" name="id" value={task.id} />
+          <button class="btn-icon delete">🗑️</button>
+        </form>
 
-  <!-- DELETE -->
-  <form method="POST" action="?/deleteTask">
-    <input type="hidden" name="id" value={task.id} />
-    <button
-      class="btn-delete"
-      on:click={(e) => {
-        if (!confirm('Wirklich löschen?')) {
-          e.preventDefault();
-        }
-      }}
-    >
-      Löschen
-    </button>
-  </form>
+      </div>
+
+    </div>
+
+  {/each}
 
 </div>
- </div> <!-- task-card -->
 
-        </div> <!-- col -->
-
-      {/each}
-    {/if}
-
-  </div> <!-- row -->
-
-  <!-- NEW BUTTON -->
-  <div class="text-center mt-5">
-    <a href="/tasks/new" class="btn-add">
-      ➕ Neue Aufgabe
-    </a>
-  </div>
+  <a href="/tasks/new" class="btn-add">
+    ➕ Neue Aufgabe
+  </a>
 
 </div>

@@ -2,32 +2,34 @@ import { getDb } from '$lib/server/db';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies }) => {
-  const db = await getDb();
-
   const userCookie = cookies.get('user');
 
-  if (!userCookie) {
-    return {
-      totalTasks: 0,
-      doneTasks: 0,
-      openTasks: 0
-    };
+  const ADMIN_ID = "6a1c8eecd439b1e776440b2e"; // deine ID
+
+  let userId;
+
+  if (userCookie) {
+    const user = JSON.parse(userCookie);
+    userId = user.id;
+  } else {
+    // 🔥 DEMO MODE
+    userId = ADMIN_ID;
   }
 
-  const user = JSON.parse(userCookie);
+  const db = await getDb();
 
   const tasks = await db
     .collection('tasks')
-    .find({ userId: user.id }) // 🔥 wichtig!
+    .find({ userId })
     .toArray();
 
-  const totalTasks = tasks.length;
-  const doneTasks = tasks.filter((t) => t.done).length;
-  const openTasks = totalTasks - doneTasks;
+  const total = tasks.length;
+  const done = tasks.filter(t => t.done).length;
+  const open = tasks.filter(t => !t.done).length;
 
   return {
-    totalTasks,
-    doneTasks,
-    openTasks
+    total,
+    done,
+    open
   };
 };
