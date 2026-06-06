@@ -225,7 +225,7 @@ Die Listenansicht erfüllt diese Kriterien am besten, da sie Aufgaben klar vonei
 ![Dashboard](static/images/Dashboard_final.jpg)  
 *Dashboard mit Fortschrittsanzeige und Überblick über Aufgaben*
 
-![Aufgabenübersicht](static/images/Dashboard_final.jpg)  
+![Aufgabenübersicht](static/images/Aufgabenuebersicht_final.jpg)  
 *Kartenbasierte Darstellung der Aufgaben mit Aktionen*
 
 ![Neue Aufgabe](static/images/Neue_Aufgabe_final.jpg)  
