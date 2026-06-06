@@ -1,4 +1,4 @@
-# Projektdokumentation - [Projekttitel]
+# Projektdokumentation - Studyflow
 
 ## Inhaltsverzeichnis
 
@@ -25,28 +25,39 @@
 Kurz beschreiben, welches Problem adressiert wird und welches Ergebnis angestrebt ist. Wem nützt die Lösung, wer ist beteiligt oder betroffen?
 - **Problem:** Studierende haben oft mehrere Lernaufgaben gleichzeitig und verlieren den Überblick. Zudem fällt es vielen schwer, fokussiert zu lernen und Aufgaben konsequent abzuschliessen.  
 - **Ziele:** _
-- Übersicht über Aufgaben schaffen  
-- Fokus beim Lernen unterstützen  
-- Aufgaben einfach erstellen und verwalten können  
-- Fortschritt sichtbar machen  
-- Motivation durch visuelles Feedback erhöhen 
-- **Primäre Zielgruppe:** Studierende, die ihre Lernaufgaben strukturieren und fokussierter arbeiten möchten
-- **Weitere Stakeholder [Optional]:** _[z. B. Verwaltung, Geschäftsleitung]_  
+Das Ziel des Projekts war die Entwicklung einer webbasierten Lernplattform für Studierende. Die Anwendung soll die Planung von Lernaufgaben vereinfachen, fokussiertes Arbeiten durch einen integrierten Timer unterstützen und den Lernfortschritt visualisieren.
 
+Folgende Ziele wurden definiert:
+
+- Übersicht über Lernaufgaben schaffen
+- Fokus beim Lernen unterstützen
+- Aufgaben einfach erstellen und verwalten
+- Lernzeit automatisch erfassen
+- Fortschritt sichtbar machen
+- Motivation durch visuelles Feedback erhöhen
+
+- **Primäre Zielgruppe:** Studierende, die ihre Lernaufgaben strukturieren und fokussierter arbeiten möchten
 
 ## 2. Lösungsidee
 Beschreibt die Lösungsidee.
 - **Kernfunktionalität:** _[Workflows kurz nennen und optional illustrieren]_  
 - Aufgaben erstellen  
-- Aufgaben bearbeiten  
-- Aufgaben als erledigt markieren  
-- Aufgaben filtern (offen / erledigt)  
-- Fortschritt anzeigen 
+- Aufgaben verwalten (bearbeiten, löschen, filtern)  
+- Fokus-Timer mit Start, Pause und Reset  
+- Fokus-Session durchführen (Timer)  
+- Automatische Speicherung der Lernzeit  
+- Fortschritt in Statistik anzeigen 
+- Übernahme der Zeit direkt aus einer Aufgabe
+- Automatische Speicherung von Lernsessions
+
 - **Annahmen [Optional]:** _[welche Hypothesen werden geprüft?]_
 - Nutzer möchten einfache und schnelle Eingabe  
-- Visuelles Feedback motiviert  
+- Visuelles Feedback motiviert 
+
 - **Abgrenzung [Optional]:** _[Was gehört explizit nicht zum Umfang?]_  
 - Kein komplexes Zeittracking  
+- Login und Registrierung
+- Fortschritt in Statistik anzeigen
 
 ## 3. Vorgehen & Artefakte
 Die Entwicklung der Anwendung erfolgte iterativ in mehreren Phasen. Ziel war es, eine funktionale und benutzerfreundliche Lern-App mit Timer, Aufgabenverwaltung und Statistik zu erstellen.
@@ -65,28 +76,38 @@ Routing zwischen Seiten
 In dieser Phase wurde eine Aufgabenverwaltung implementiert, bei der Nutzer Aufgaben erstellen, anzeigen und als erledigt markieren können.
 
 Features:
-Aufgaben erstellen (Titel, Fach, Dauer, Datum)
+Aufgaben erstellen (Titel, Fach, Beschreibung, Dauer, Datum, Priorität)
 Aufgabenliste anzeigen
 Filter (Offen / Erledigt)
 Löschen von Aufgaben
+Aufgabe bearbeiten
+
 
 Artefakte:
 /tasks
 MongoDB Collection tasks
 
 🔹 Phase 3: Timer (Pomodoro)
-Es wurde ein Timer entwickelt, der zwischen Fokus- und Pausenphasen wechselt.
+
+Es wurde ein interaktiver Fokus-Timer entwickelt, der Nutzer beim strukturierten Lernen unterstützt.
 
 Features:
-Start / Pause / Reset
-Fokus- und Pausenzeit einstellbar
-automatische Wiederholung (Pomodoro)
+- Start / Pause / Reset
+- Timer läuft nach Pause korrekt weiter (kein Reset)
+- Individuelle Zeitsteuerung (Minuten & Sekunden)
+- Auswahl von Lernmethoden:
+  - Pomodoro (25/5)
+  - Deep Work (50/10)
+  - Quick Session (15/3)
 
 Erweiterung:
-Beim Stoppen wird eine Lern-Session gespeichert
+- Aufgaben können direkt mit dem Timer verknüpft werden
+- Beim Start einer Aufgabe wird die Zeit automatisch übernommen
+- Nach Beenden wird eine Lern-Session gespeichert
+
 
 Artefakte:
-/timer
+/timer  
 Session-Tracking
 
 🔹 Phase 4: Benutzer-System (Login & Registrierung)
@@ -111,7 +132,14 @@ Es wurde eine Statistikseite entwickelt, die Lernaktivitäten visualisiert.
 Features:
 Gesamtlernzeit
 Anzahl Sessions
+Anzahl Streaks
+Durschnitt
+Anzahl erledigte Aufgabe
+Anzahl offene Aufgaben
+Bester Tag
 Diagramm (Lernzeit pro Tag)
+Wochenziel
+Aufgabenfortschritt
 
 Artefakte:
 /stats
@@ -121,10 +149,11 @@ MongoDB Collection sessions
 Zum Abschluss wurde die Benutzeroberfläche verbessert.
 
 Verbesserungen:
-Moderne Karten (Cards)
+Listenansicht
 Dashboard mit Übersicht
-persönliche Begrüßung („Hallo Benutzer“)
-Navigation mit Login-Status
+Login und Registrierung
+Zusätzliche Filter
+Priorität der Aufgaben
 
 ### 3.1 Understand & Define
 - **Zielgruppenverständnis:** _[Problemraumanalyse, Recherche, (Proto-)Personas]_
@@ -141,21 +170,21 @@ Im Rahmen der Ideenfindung wurden verschiedene Layouts für die Aufgabenübersic
 
 - **Skizzen:** _[Mehrere Varianten; Unterschiede kurz dokumentieren.]_
 **Variante 1: Klassische Listenansicht**  
-![Listenansicht](images Aufgabenübersicht_Listenansicht.png)
+![Listenansicht](images Aufgabenuebersicht_Listenansicht.png)
 
 Eine einfache, textbasierte Liste mit Aufgaben untereinander.  
 → Vorteil: sehr übersichtlich und schnell erfassbar  
 → Nachteil: wirkt weniger modern und bietet wenig visuelle Struktur 
 
   **Variante 2: Kartenbasierte Darstellung**  
-![Kartenbasiert](images/Aufgabenübersicht_Kartenbasiert.png)
+![Kartenbasiert](static/images/Aufgabenuebersicht_Kartenbasiert.png)
 
 Aufgaben als Karten mit Buttons.  
 → Vorteil: moderne Darstellung, bessere Struktur  
 → Nachteil: mehr Platzbedarf   
 
  **Variante 3: Dashboard-Ansatz**  
-![Dashboard](images/Dashboard.png)
+![Dashboard](static/images/Dashboard.png)
 
 Kombination aus Übersicht und Statistik.  
 → Vorteil: motivierend durch Fortschritt  
@@ -163,47 +192,50 @@ Kombination aus Übersicht und Statistik.
 
 ### 3.3 Decide
 - **Gewählte Variante & Begründung:**  
-Es wurde eine kartenbasierte Aufgabenübersicht mit Fokus auf zentrale Kernfunktionen gewählt. Ziel war es, eine intuitive und übersichtliche Benutzeroberfläche zu schaffen, die den Nutzer nicht überfordert.
+Es wurde eine Listenbasierte Aufgabenübersicht mit Fokus auf zentrale Kernfunktionen gewählt. Ziel war es, eine intuitive und übersichtliche Benutzeroberfläche zu schaffen, die den Nutzer nicht überfordert.
 
 **Entscheidungskriterien:**
 - Einfachheit und schnelle Bedienbarkeit  
 - Klare visuelle Struktur der Aufgaben  
 - Fokus auf die wichtigsten Funktionen (Erstellen, Bearbeiten, Abschließen)  
 - Motivation durch sichtbaren Fortschritt  
+- Klaren Deadlines
+- Prioritäten
 
-Die Kartenansicht erfüllt diese Kriterien am besten, da sie Aufgaben klar voneinander trennt und gleichzeitig eine moderne und ansprechende Darstellung bietet.
+Die Listenansicht erfüllt diese Kriterien am besten, da sie Aufgaben klar voneinander trennt und gleichzeitig eine moderne und ansprechende Darstellung bietet.
 
 ---
 
 - **End-to-End-Ablauf (User Journey):**
 
-1. Der Nutzer öffnet die Anwendung und gelangt zum Dashboard  
-2. Der Nutzer erstellt eine neue Aufgabe (Titel, Fach, Dauer)  
-3. Die Aufgabe erscheint in der Aufgabenübersicht  
-4. Der Nutzer kann die Aufgabe bearbeiten oder löschen  
-5. Optional startet der Nutzer den Timer zur Bearbeitung der Aufgabe  
-6. Nach Abschluss markiert der Nutzer die Aufgabe als erledigt  
-7. Der Fortschritt wird visuell angezeigt (z. B. Fortschrittsbalken oder Statistik)
+1. Nutzer öffnet Dashboard  
+2. Nutzer erstellt Aufgabe  
+3. Aufgabe erscheint in Übersicht  
+4. Nutzer startet Timer direkt aus der Aufgabe  
+5. Timer übernimmt automatisch die Dauer  
+6. Nutzer pausiert oder beendet den Timer  
+7. Lernsession wird automatisch gespeichert  
+8. Statistik zeigt Fortschritt an
+9. Nutzer kann die gespeicherten Daten im Statistik-Dashboard analysieren
 
 ---
 
 - **Mockup (Screenshots der finalen Umsetzung):**
 
-![Dashboard](images/Dashboard.png)  
+![Dashboard](static/images/Dashboard_final.jpg)  
 *Dashboard mit Fortschrittsanzeige und Überblick über Aufgaben*
 
-![Aufgabenübersicht](images/Aufgabenübersicht_Kartenanzeige.png)  
+![Aufgabenübersicht](static/images/Aufgabenuebersicht_final)  
 *Kartenbasierte Darstellung der Aufgaben mit Aktionen*
 
-![Neue Aufgabe](images/Neue_Aufgabe.png)  
+![Neue Aufgabe](static/images/Neue_Aufgabe_final.jpg)  
 *Formular zur Erstellung neuer Aufgaben*
 
-![Timer](images/Timer.png)  
+![Timer](static/images/Timer_final.jpg)  
 *Fokus-Timer zur Bearbeitung von Aufgaben*
 
-![Statistik](images/Statistik.png)  
+![Statistik](static/images/Statistik_final.jpg)  
 *Übersicht über Lernzeit und Sessions*
-- **Mockup:** _[URL, z. B. Figma; Screenshots mit kurzen Beschreibungen]_  
 
 ### 3.4 Prototype
 
@@ -223,16 +255,16 @@ Die Struktur wurde bewusst einfach gehalten, um eine schnelle Orientierung zu er
 
 
 - **User Interface Design:** _[wichtige Screens: Screenshots mit kurzen Erläuterungen]_  
-![Dashboard](images/Dashboard.png)  
+![Dashboard](static/images/Dashboard_final.jpg)  
 *Das Dashboard zeigt eine Übersicht über alle Aufgaben sowie den aktuellen Fortschritt.*
 
-![Aufgabenübersicht](images/Aufgabenübersicht_Kartenanzeige.png)  
+![Aufgabenübersicht](static/images/Aufgabenuebersicht_final)  
 *Die Aufgaben werden in Form von Karten dargestellt, mit klaren Aktionen wie „Erledigt“, „Bearbeiten“ und „Löschen“.*
 
-![Neue Aufgabe](images/Neue_Aufgabe.png)  
+![Neue Aufgabe](static/images/Neue_Aufgabe_final.jpg)  
 *Ein einfaches Formular ermöglicht die schnelle Erstellung neuer Aufgaben.*
 
-![Timer](images/Timer.png)  
+![Timer](static/images/Timer_final.jpg)  
 *Der Timer unterstützt den Nutzer beim fokussierten Arbeiten und kann Aufgaben direkt abschließen.*
 
 - **Designentscheidungen:** _[zentrale Entscheidungen und Begründungen]_
@@ -252,6 +284,7 @@ Die Anwendung wurde mit modernen Web-Technologien umgesetzt:
 - SvelteKit (Frontend + Server-Routing)  
 - MongoDB Atlas (Datenbank)  
 - Netlify (Deployment und Hosting)  
+- Chart.js für die Darstellung von Lernstatistiken
 
 SvelteKit ermöglicht eine klare Trennung zwischen Client- und Serverlogik sowie ein effizientes Routing.
 
@@ -273,8 +306,7 @@ Die Anwendung ist modular aufgebaut und folgt der Struktur von SvelteKit:
   - `/stats` (Statistik)  
 
 - Komponenten:  
-  - `TaskCard.svelte` zur Darstellung einzelner Aufgaben  
-  - Wiederverwendbare UI-Elemente wie Buttons und Karten  
+  - `TaskCard.svelte` zur Darstellung einzelner Aufgaben   
 
 Diese Struktur ermöglicht eine gute Wartbarkeit und Wiederverwendbarkeit von Komponenten. 
 
@@ -283,9 +315,20 @@ Die Daten werden in MongoDB gespeichert und über Server-Funktionen (PageServerL
 
 - Aufgaben werden in der Collection `tasks` gespeichert  
 - Sessions (Timer-Daten) werden in der Collection `sessions` gespeichert  
-- Daten werden serverseitig geladen und als Props an die Seiten übergeben  
+- Daten werden serverseitig geladen und als Props an die Seiten übergeben
+- Der Fokus-Timer speichert nach jeder Nutzung automatisch eine Lernsitzung 
+  in der Datenbank (MongoDB). Diese Daten werden in der Statistik aggregiert 
+  und visuell als Diagramm dargestellt.  
 
 Die Kommunikation erfolgt über HTTP-Requests und Form-Actions.
+- Der Timer ist direkt mit Aufgaben verknüpft:
+  - Beim Start einer Aufgabe wird die Dauer automatisch übernommen
+  - Übergabe erfolgt über URL-Parameter (`?minutes=XX`)
+  - Dadurch entsteht ein durchgängiger Workflow zwischen Aufgaben und Timer
+
+- Timer-Sessions werden automatisch gespeichert:
+  - Dauer wird in MongoDB (`sessions`) gespeichert
+  - Diese Daten werden in der Statistik visualisiert (Diagramm + Fortschritt)
 
 - **Deployment:** _[URL]_  
 https://studyflow-app-pt.netlify.app/
@@ -355,6 +398,13 @@ Die identifizierten Probleme betreffen hauptsächlich kleinere Usability-Aspekte
 5. Timer flexibler gestalten (individuelle Dauer möglich)  
 
 Einige dieser Verbesserungen wurden im weiteren Verlauf bereits umgesetzt (z. B. Login-System, Timer-Anpassungen).
+Weitere umgesetzte Verbesserungen:
+
+- Timer pausiert jetzt korrekt und startet nicht mehr neu
+- Individuelle Zeitsteuerung implementiert
+- Aufgaben mit Timer verknüpft
+- Benutzeroberfläche deutlich vergrößert und übersichtlicher gestaltet
+- Statistik erweitert (Diagramm + Fortschrittsbalken)
 
 ## 4. Erweiterungen [Optional]
 Dokumentiert Erweiterungen über den Mindestumfang hinaus.
@@ -485,9 +535,11 @@ Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im 
 - ChatGPT wurde zur Unterstützung verwendet  
 
 - **Zweck & Umfang**: _[wie, wofür und in welchem Ausmass wurde KI eingesetzt (z. B. Textentwürfe, Codevorschläge, Tests, Refactoring); welche Teile stammen (ganz/teilweise) aus KI-Unterstützung?]_
-- Hilfe bei Code  
-- Debugging  
-- Struktur 
+- Unterstützung bei der Entwicklung von SvelteKit-Komponenten
+- Debugging von Datenbank- und Routing-Problemen
+- Unterstützung bei MongoDB-Abfragen
+- Hilfe bei UI-Verbesserungen
+- Unterstützung bei der Erstellung der Projektdokumentation 
 
 - **Eigene Leistung (Abgrenzung):** _[was ist eigenständig erarbeitet/überarbeitet worden?]_
 - Anpassung und Verständnis des Codes  
