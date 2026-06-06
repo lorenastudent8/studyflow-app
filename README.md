@@ -226,7 +226,7 @@ Die Listenansicht erfüllt diese Kriterien am besten, da sie Aufgaben klar vonei
 *Dashboard mit Fortschrittsanzeige und Überblick über Aufgaben*
 
 ![Aufgabenübersicht](static/images/Aufgabenuebersicht_final.jpg)  
-*Kartenbasierte Darstellung der Aufgaben mit Aktionen*
+*Listenbasierte Darstellung der Aufgaben mit Aktionen*
 
 ![Neue Aufgabe](static/images/Neue_Aufgabe_final.jpg)  
 *Formular zur Erstellung neuer Aufgaben*
@@ -259,7 +259,7 @@ Die Struktur wurde bewusst einfach gehalten, um eine schnelle Orientierung zu er
 *Das Dashboard zeigt eine Übersicht über alle Aufgaben sowie den aktuellen Fortschritt.*
 
 ![Aufgabenübersicht](static/images/Aufgabenuebersicht_final.jpg)  
-*Die Aufgaben werden in Form von Karten dargestellt, mit klaren Aktionen wie „Erledigt“, „Bearbeiten“ und „Löschen“.*
+*Die Aufgabenübersicht wird als Listenanzeige, mit klaren Aktionen wie „Erledigt“, „Bearbeiten“ und „Löschen“ angezeigt.*
 
 ![Neue Aufgabe](static/images/Neue_Aufgabe_final.jpg)  
 *Ein einfaches Formular ermöglicht die schnelle Erstellung neuer Aufgaben.*
